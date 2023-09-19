@@ -1,0 +1,86 @@
+---
+title: "Data Wrangling I"
+author: Ekaterina Hofrenning
+output: github_document
+---
+Load packages
+
+```{r}
+library(tidyverse)
+```
+
+Import `FAS_litters.csv` using a relative path:
+
+```{r}
+litters_df = read_csv("data/FAS_litters.csv")
+litters_df = janitor::clean_names(litters_df)
+
+
+```
+
+Import `FAS_litters.csv` using an absolute path.
+
+```{r}
+litters_df = read_csv("~/Documents/P8105/data_wrangling_i/data/FAS_litters.csv")
+```
+
+Using relative paths is better long-term because it ensures that everything is loaded in a contained folder/R project
+
+
+Import pups dataset:
+
+```{r}
+pups_df = read_csv("data/FAS_pups.csv")
+pups_df = read_csv("~/Documents/P8105/data_wrangling_i/data/FAS_pups.csv")
+```
+
+
+```{r}
+skimr::skim(litters_df)
+```
+
+Parsing columns
+
+```{r}
+litters_data = read_csv(file = "./data/FAS_litters.csv",
+  col_types = cols(
+    Group = col_character(),
+    `Litter Number` = col_character(),
+    `GD0 weight` = col_double(),
+    `GD18 weight` = col_double(),
+    `GD of Birth` = col_integer(),
+    `Pups born alive` = col_integer(),
+    `Pups dead @ birth` = col_integer(),
+    `Pups survive` = col_integer()
+  )
+)
+
+litters_data = read_csv(file = "./data/FAS_litters.csv",
+  col_types = cols(
+    Group = col_factor()
+  )
+)
+```
+
+
+Other File Formats:
+
+Excel files
+```{r}
+library(readxl)
+mlb11_data = read_excel("data/mlb11.xlsx", n_max = 20)
+head(mlb11_data, 5)
+```
+
+SAS files
+```{r}
+library(haven)
+pulse_data = read_sas("./data/public_pulse_data.sas7bdat")
+head(pulse_data, 5)
+```
+
+Base R vs. ReadR: 
+
+- `read_csv()` is better than `read.csv()`. read.csv() prints all observations while read_csv() shows less.
+
+- write_csv() to the relative path to export data
