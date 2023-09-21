@@ -1,0 +1,56 @@
+---
+title: "Data Wrangling I"
+author: Ekaterina Hofrenning
+output: github_document
+---
+
+```{r}
+# Packages
+library(tidyverse)
+```
+
+```{r}
+# Import data
+litters_df = read_csv("data/FAS_litters.csv")
+litters_df = janitor::clean_names(litters_df)
+
+pups_df = read_csv("data/FAS_pups.csv")
+pups_df = janitor::clean_names(pups_df)
+```
+
+## select()
+
+```{r}
+select(litters_df, group, starts_with("pups")) # starts_with() ex.
+select(litters_df, -starts_with("gd"))
+select(litters_df, group, litter_id = litter_number) # can rename in select()
+select(litters_df, gd0_weight, everything()) # everything(), a way to rearrange
+pups_df %>% select(1:3) # using position number
+```
+
+`select()` vs. `pull()`
+
+```{r}
+litters_df %>% select(group)  #keeps it in dataframe/tibble
+litters_df %>% pull(group) # pulls data out as a vector (similar to $, but dplyr version)
+```
+
+`rename()` and `relocate()`
+
+```{r}
+rename(litters_df, litter_id = litter_number)
+litters_df %>% relocate(litter_number) # litter_number in 1st position
+```
+
+
+## filter()
+
+```{r}
+litters_df %>% filter(group == "Con7")
+litters_df %>% filter(group != "Con7") # not equal to
+litters_df %>% filter(group %in% c("Con7", "Con8"), gd0_weight > 20) # more than one condition
+```
+
+
+
+
